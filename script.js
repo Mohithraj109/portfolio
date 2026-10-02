@@ -940,13 +940,9 @@ let scrollProgressFrame = 0;
 
 function updateScrollProgress() {
   if (scrollProgressFrame) return;
-
   scrollProgressFrame = requestAnimationFrame(() => {
-    const scrollableHeight =
-      document.documentElement.scrollHeight - window.innerHeight;
-    const progress = scrollableHeight > 0
-      ? (window.scrollY / scrollableHeight) * 100
-      : 0;
+    const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = scrollableHeight > 0 ? (window.scrollY / scrollableHeight) * 100 : 0;
     scrollProgressFill.style.width = `${progress}%`;
     scrollProgressFrame = 0;
   });
@@ -956,28 +952,194 @@ window.addEventListener("scroll", updateScrollProgress, { passive: true });
 window.addEventListener("resize", updateScrollProgress, { passive: true });
 updateScrollProgress();
 
+// ── Scroll spy ──────────────────────────────────────────────────────────────
 const navLinks = document.querySelectorAll(".nav-link");
 const sectionObserver = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
-
       entry.target.classList.add("is-current");
-
       navLinks.forEach((link) => {
         const isActive = link.hash === `#${entry.target.id}`;
         link.classList.toggle("is-active", isActive);
-        if (isActive) {
-          link.setAttribute("aria-current", "location");
-        } else {
-          link.removeAttribute("aria-current");
-        }
+        if (isActive) link.setAttribute("aria-current", "location");
+        else link.removeAttribute("aria-current");
       });
     });
   },
   { rootMargin: "-35% 0px -55% 0px" }
 );
+document.querySelectorAll("main .page-section[id]").forEach((s) => sectionObserver.observe(s));
 
-document.querySelectorAll("main .page-section[id]").forEach((section) => {
-  sectionObserver.observe(section);
+// ── Nav opacity on scroll ────────────────────────────────────────────────────
+const siteHeader = document.querySelector(".site-header");
+window.addEventListener("scroll", () => {
+  siteHeader.classList.toggle("is-scrolled", window.scrollY > 40);
+}, { passive: true });
+
+// ── Custom cursor ────────────────────────────────────────────────────────────
+const cursorDot  = document.createElement("div");
+const cursorRing = document.createElement("div");
+cursorDot.className  = "cursor-dot";
+cursorRing.className = "cursor-ring";
+document.body.append(cursorDot, cursorRing);
+
+let cx = window.innerWidth / 2, cy = window.innerHeight / 2;
+let rx = cx, ry = cy;
+
+window.addEventListener("pointermove", (e) => {
+  cx = e.clientX; cy = e.clientY;
+}, { passive: true });
+
+document.querySelectorAll("a, button, .project-card, .stack-item").forEach((el) => {
+  el.addEventListener("mouseenter", () => cursorRing.classList.add("is-hovering"));
+  el.addEventListener("mouseleave", () => cursorRing.classList.remove("is-hovering"));
+});
+
+// Glow blob
+const glowBlob = document.querySelector(".glow-blob");
+let gbx = window.innerWidth / 2, gby = window.innerHeight / 2;
+let tgbx = gbx, tgby = gby;
+window.addEventListener("pointermove", (e) => { tgbx = e.clientX; tgby = e.clientY; }, { passive: true });
+
+(function animateCursor() {
+  rx += (cx - rx) * 0.12;
+  ry += (cy - ry) * 0.12;
+  gbx += (tgbx - gbx) * 0.06;
+  gby += (tgby - gby) * 0.06;
+  cursorDot.style.transform  = `translate(${cx}px,${cy}px) translate(-50%,-50%)`;
+  cursorRing.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`;
+  if (glowBlob) glowBlob.style.transform = `translate(${gbx}px,${gby}px) translate(-50%,-50%)`;
+  requestAnimationFrame(animateCursor);
+})();
+
+// Back to top
+const backToTop = document.querySelector(".back-to-top");
+if (backToTop) {
+  window.addEventListener("scroll", () => {
+    backToTop.classList.toggle("is-visible", window.scrollY > 400);
+  }, { passive: true });
+}
+
+// ── Typewriter on h1 ─────────────────────────────────────────────────────────
+const h1 = document.getElementById("hero-title");
+if (h1) {
+  const lines = ["Curious by nature.", "Builder by choice."];
+  h1.innerHTML = `<span class="tw-line"></span><br/><span class="tw-line tw-accent"></span>`;
+  const [line1El, line2El] = h1.querySelectorAll(".tw-line");
+
+  function typeLine(el, text, speed, done) {
+    let i = 0;
+    el.classList.add("tw-typing");
+    const id = setInterval(() => {
+      el.textContent = text.slice(0, ++i);
+      if (i === text.length) { clearInterval(id); el.classList.remove("tw-typing"); if (done) done(); }
+    }, speed);
+  }
+
+  // Wait for preloader then type
+  setTimeout(() => {
+    typeLine(line1El, lines[0], 52, () => {
+      setTimeout(() => typeLine(line2El, lines[1], 52), 180);
+    });
+  }, 2800);
+}
+
+// ── Cycling word in hero eyebrow ─────────────────────────────────────────────
+const eyebrowEl = document.querySelector(".hero-copy .eyebrow");
+if (eyebrowEl) {
+  const words = ["COMPUTER SCIENCE", "AI SYSTEMS", "CREATIVE TECH", "CLASS OF 2028"];
+  let wi = 0;
+  const wordSpan = document.createElement("span");
+  wordSpan.className = "eyebrow-cycle";
+  wordSpan.textContent = words[0];
+  // Replace static text node content but keep the dot mark
+  eyebrowEl.childNodes.forEach(n => { if (n.nodeType === 3) n.textContent = " "; });
+  eyebrowEl.appendChild(wordSpan);
+  setInterval(() => {
+    wordSpan.classList.add("fade-out");
+    setTimeout(() => {
+      wi = (wi + 1) % words.length;
+      wordSpan.textContent = words[wi];
+      wordSpan.classList.remove("fade-out");
+    }, 300);
+  }, 2600);
+}
+
+// ── Staggered aside focus lines ───────────────────────────────────────────────
+const asideFocus = document.querySelector(".aside-focus");
+if (asideFocus) {
+  [...asideFocus.children].forEach((el, i) => {
+    el.style.setProperty("--stagger", `${i * 120}ms`);
+    el.classList.add("aside-line");
+  });
+  const asideObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll(".aside-line").forEach(el => el.classList.add("is-visible"));
+        asideObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  asideObserver.observe(asideFocus);
+}
+
+// ── Magnetic buttons ─────────────────────────────────────────────────────────
+document.querySelectorAll(".button, .project-arrow, .contact-email").forEach((btn) => {
+  btn.addEventListener("mousemove", (e) => {
+    const r = btn.getBoundingClientRect();
+    const dx = e.clientX - (r.left + r.width  / 2);
+    const dy = e.clientY - (r.top  + r.height / 2);
+    btn.style.transform = `translate(${dx * 0.28}px, ${dy * 0.28}px)`;
+  });
+  btn.addEventListener("mouseleave", () => { btn.style.transform = ""; });
+});
+
+// ── Card tilt (3-D hover) ─────────────────────────────────────────────────────
+document.querySelectorAll(".project-card").forEach((card) => {
+  card.addEventListener("mousemove", (e) => {
+    const r = card.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width  - 0.5;
+    const y = (e.clientY - r.top)  / r.height - 0.5;
+    card.style.transform = `perspective(700px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) scale(1.02)`;
+  });
+  card.addEventListener("mouseleave", () => { card.style.transform = ""; });
+});
+
+// ── Button ripple ─────────────────────────────────────────────────────────────
+document.querySelectorAll(".button").forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    const r = btn.getBoundingClientRect();
+    const ripple = document.createElement("span");
+    ripple.className = "btn-ripple";
+    ripple.style.left = `${e.clientX - r.left}px`;
+    ripple.style.top  = `${e.clientY - r.top}px`;
+    btn.appendChild(ripple);
+    ripple.addEventListener("animationend", () => ripple.remove());
+  });
+});
+
+// ── Animated counters (hero-meta) ─────────────────────────────────────────────
+function animateCounter(el, target, duration) {
+  let start = null;
+  const step = (ts) => {
+    if (!start) start = ts;
+    const p = Math.min((ts - start) / duration, 1);
+    el.textContent = String(Math.round(p * target)).padStart(2, "0");
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+document.querySelectorAll(".meta-number").forEach((el, i) => {
+  const target = parseInt(el.textContent, 10);
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        setTimeout(() => animateCounter(el, target, 900), i * 200);
+        counterObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  counterObserver.observe(el);
 });

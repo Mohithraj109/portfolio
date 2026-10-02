@@ -940,13 +940,9 @@ let scrollProgressFrame = 0;
 
 function updateScrollProgress() {
   if (scrollProgressFrame) return;
-
   scrollProgressFrame = requestAnimationFrame(() => {
-    const scrollableHeight =
-      document.documentElement.scrollHeight - window.innerHeight;
-    const progress = scrollableHeight > 0
-      ? (window.scrollY / scrollableHeight) * 100
-      : 0;
+    const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = scrollableHeight > 0 ? (window.scrollY / scrollableHeight) * 100 : 0;
     scrollProgressFill.style.width = `${progress}%`;
     scrollProgressFrame = 0;
   });
@@ -956,28 +952,486 @@ window.addEventListener("scroll", updateScrollProgress, { passive: true });
 window.addEventListener("resize", updateScrollProgress, { passive: true });
 updateScrollProgress();
 
+// ── Scroll spy ──────────────────────────────────────────────────────────────
 const navLinks = document.querySelectorAll(".nav-link");
 const sectionObserver = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
-
       entry.target.classList.add("is-current");
-
       navLinks.forEach((link) => {
         const isActive = link.hash === `#${entry.target.id}`;
         link.classList.toggle("is-active", isActive);
-        if (isActive) {
-          link.setAttribute("aria-current", "location");
-        } else {
-          link.removeAttribute("aria-current");
-        }
+        if (isActive) link.setAttribute("aria-current", "location");
+        else link.removeAttribute("aria-current");
       });
     });
   },
   { rootMargin: "-35% 0px -55% 0px" }
 );
+document.querySelectorAll("main .page-section[id]").forEach((s) => sectionObserver.observe(s));
 
-document.querySelectorAll("main .page-section[id]").forEach((section) => {
-  sectionObserver.observe(section);
+// ── Nav opacity on scroll ────────────────────────────────────────────────────
+const siteHeader = document.querySelector(".site-header");
+window.addEventListener("scroll", () => {
+  siteHeader.classList.toggle("is-scrolled", window.scrollY > 40);
+}, { passive: true });
+
+// ── Custom cursor ────────────────────────────────────────────────────────────
+const cursorDot  = document.createElement("div");
+const cursorRing = document.createElement("div");
+cursorDot.className  = "cursor-dot";
+cursorRing.className = "cursor-ring";
+document.body.append(cursorDot, cursorRing);
+
+let cx = window.innerWidth / 2, cy = window.innerHeight / 2;
+let rx = cx, ry = cy;
+
+window.addEventListener("pointermove", (e) => {
+  cx = e.clientX; cy = e.clientY;
+}, { passive: true });
+
+document.querySelectorAll("a, button, .project-card, .stack-item").forEach((el) => {
+  el.addEventListener("mouseenter", () => cursorRing.classList.add("is-hovering"));
+  el.addEventListener("mouseleave", () => cursorRing.classList.remove("is-hovering"));
 });
+
+// Glow blob
+const glowBlob = document.querySelector(".glow-blob");
+let gbx = window.innerWidth / 2, gby = window.innerHeight / 2;
+let tgbx = gbx, tgby = gby;
+window.addEventListener("pointermove", (e) => { tgbx = e.clientX; tgby = e.clientY; }, { passive: true });
+
+(function animateCursor() {
+  rx += (cx - rx) * 0.12;
+  ry += (cy - ry) * 0.12;
+  gbx += (tgbx - gbx) * 0.06;
+  gby += (tgby - gby) * 0.06;
+  cursorDot.style.transform  = `translate(${cx}px,${cy}px) translate(-50%,-50%)`;
+  cursorRing.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`;
+  if (glowBlob) glowBlob.style.transform = `translate(${gbx}px,${gby}px) translate(-50%,-50%)`;
+  requestAnimationFrame(animateCursor);
+})();
+
+// Back to top
+const backToTop = document.querySelector(".back-to-top");
+if (backToTop) {
+  window.addEventListener("scroll", () => {
+    backToTop.classList.toggle("is-visible", window.scrollY > 400);
+  }, { passive: true });
+}
+
+// ── Typewriter on h1 ─────────────────────────────────────────────────────────
+const h1 = document.getElementById("hero-title");
+if (h1) {
+  const lines = ["Curious by nature.", "Builder by choice."];
+  h1.innerHTML = `<span class="tw-line"></span><br/><span class="tw-line tw-accent"></span>`;
+  const [line1El, line2El] = h1.querySelectorAll(".tw-line");
+
+  function typeLine(el, text, speed, done) {
+    let i = 0;
+    el.classList.add("tw-typing");
+    const id = setInterval(() => {
+      el.textContent = text.slice(0, ++i);
+      if (i === text.length) { clearInterval(id); el.classList.remove("tw-typing"); if (done) done(); }
+    }, speed);
+  }
+
+  // Wait for preloader then type
+  setTimeout(() => {
+    typeLine(line1El, lines[0], 52, () => {
+      setTimeout(() => typeLine(line2El, lines[1], 52), 180);
+    });
+  }, 2800);
+}
+
+// ── Cycling word in hero eyebrow ─────────────────────────────────────────────
+const eyebrowEl = document.querySelector(".hero-copy .eyebrow");
+if (eyebrowEl) {
+  const words = ["COMPUTER SCIENCE", "AI SYSTEMS", "CREATIVE TECH", "CLASS OF 2028"];
+  let wi = 0;
+  const wordSpan = document.createElement("span");
+  wordSpan.className = "eyebrow-cycle";
+  wordSpan.textContent = words[0];
+  // Replace static text node content but keep the dot mark
+  eyebrowEl.childNodes.forEach(n => { if (n.nodeType === 3) n.textContent = " "; });
+  eyebrowEl.appendChild(wordSpan);
+  setInterval(() => {
+    wordSpan.classList.add("fade-out");
+    setTimeout(() => {
+      wi = (wi + 1) % words.length;
+      wordSpan.textContent = words[wi];
+      wordSpan.classList.remove("fade-out");
+    }, 300);
+  }, 2600);
+}
+
+// ── Staggered aside focus lines ───────────────────────────────────────────────
+const asideFocus = document.querySelector(".aside-focus");
+if (asideFocus) {
+  [...asideFocus.children].forEach((el, i) => {
+    el.style.setProperty("--stagger", `${i * 120}ms`);
+    el.classList.add("aside-line");
+  });
+  const asideObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll(".aside-line").forEach(el => el.classList.add("is-visible"));
+        asideObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  asideObserver.observe(asideFocus);
+}
+
+// ── Magnetic buttons ─────────────────────────────────────────────────────────
+document.querySelectorAll(".button, .project-arrow, .contact-email").forEach((btn) => {
+  btn.addEventListener("mousemove", (e) => {
+    const r = btn.getBoundingClientRect();
+    const dx = e.clientX - (r.left + r.width  / 2);
+    const dy = e.clientY - (r.top  + r.height / 2);
+    btn.style.transform = `translate(${dx * 0.28}px, ${dy * 0.28}px)`;
+  });
+  btn.addEventListener("mouseleave", () => { btn.style.transform = ""; });
+});
+
+// ── Card tilt (3-D hover) ─────────────────────────────────────────────────────
+document.querySelectorAll(".project-card").forEach((card) => {
+  card.addEventListener("mousemove", (e) => {
+    const r = card.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width  - 0.5;
+    const y = (e.clientY - r.top)  / r.height - 0.5;
+    card.style.transform = `perspective(700px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) scale(1.02)`;
+  });
+  card.addEventListener("mouseleave", () => { card.style.transform = ""; });
+});
+
+// ── Button ripple ─────────────────────────────────────────────────────────────
+document.querySelectorAll(".button").forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    const r = btn.getBoundingClientRect();
+    const ripple = document.createElement("span");
+    ripple.className = "btn-ripple";
+    ripple.style.left = `${e.clientX - r.left}px`;
+    ripple.style.top  = `${e.clientY - r.top}px`;
+    btn.appendChild(ripple);
+    ripple.addEventListener("animationend", () => ripple.remove());
+  });
+});
+
+// ── Ghost Snake Game ─────────────────────────────────────────────────────────
+(function ghostGame() {
+  const canvas  = document.getElementById("ghostCanvas");
+  if (!canvas) return;
+  const ctx     = canvas.getContext("2d");
+  const shell   = canvas.parentElement;
+  const scoreEl = document.querySelector(".game-score");
+  const bestEl  = document.querySelector(".game-best");
+  const statusEl= document.querySelector(".game-status-text");
+  const overlay = document.getElementById("gameOverlay");
+  const finalEl = document.getElementById("finalScore");
+  const restartBtn = document.getElementById("gameRestart");
+
+  const CELL = 28;
+  let W, H, COLS, ROWS;
+  let snake, dir, inputQueue = [], orb, score, best = 0, running = false;
+  let gameLoop = null, rafId = null;
+
+  // ── size canvas to shell width, fixed 280px play height ──
+  function resize() {
+    W    = shell.clientWidth  || 800;
+    H    = 280;
+    canvas.width  = W;
+    canvas.height = H;
+    COLS = Math.floor(W / CELL);
+    ROWS = Math.floor(H / CELL);
+  }
+
+  function initState(initialDir) {
+    const mx = Math.floor(COLS / 2), my = Math.floor(ROWS / 2);
+    snake   = [{x:mx,y:my},{x:mx-1,y:my},{x:mx-2,y:my}];
+    const validStart = (initialDir && typeof initialDir.x === 'number' && !(initialDir.x === -1 && initialDir.y === 0));
+    dir     = validStart ? {x: initialDir.x, y: initialDir.y} : {x: 1, y: 0};
+    inputQueue = [];
+    score   = 0;
+    placeOrb();
+    updateHUD();
+  }
+
+  function placeOrb() {
+    let p, t = 0;
+    do { p = {x:Math.floor(Math.random()*COLS), y:Math.floor(Math.random()*ROWS)}; t++; }
+    while (snake.some(s=>s.x===p.x&&s.y===p.y) && t<300);
+    orb = p;
+  }
+
+  function updateHUD() {
+    const f = n => String(n).padStart(3,"0");
+    if (scoreEl) scoreEl.textContent = f(score);
+    if (bestEl)  bestEl.textContent  = f(best);
+  }
+
+  // ── draw faint grid ──
+  function drawGrid() {
+    ctx.save();
+    ctx.strokeStyle = "rgba(216,226,255,0.06)";
+    ctx.lineWidth   = 0.5;
+    for (let x=0;x<=COLS;x++){ctx.beginPath();ctx.moveTo(x*CELL,0);ctx.lineTo(x*CELL,H);ctx.stroke();}
+    for (let y=0;y<=ROWS;y++){ctx.beginPath();ctx.moveTo(0,y*CELL);ctx.lineTo(W,y*CELL);ctx.stroke();}
+    ctx.restore();
+  }
+
+  // ── draw red glowing sphere (not 3D, glowing) ──
+  function drawOrb(t) {
+    const px = orb.x * CELL + CELL / 2;
+    const py = orb.y * CELL + CELL / 2;
+    const pulse = 1 + Math.sin(t * 0.005) * 0.16;
+    const r = CELL * 0.32 * pulse;
+
+    ctx.save();
+    // Ambient red outer bloom halo
+    const halo = ctx.createRadialGradient(px, py, 0, px, py, r * 3.0);
+    halo.addColorStop(0, "rgba(255, 25, 55, 0.55)");
+    halo.addColorStop(0.35, "rgba(255, 15, 45, 0.22)");
+    halo.addColorStop(1, "rgba(255, 10, 40, 0)");
+    ctx.beginPath();
+    ctx.arc(px, py, r * 3.0, 0, Math.PI * 2);
+    ctx.fillStyle = halo;
+    ctx.fill();
+
+    // Red glowing sphere body
+    ctx.shadowColor = "#ff1744";
+    ctx.shadowBlur = 22;
+    const sphere = ctx.createRadialGradient(px, py, 0, px, py, r);
+    sphere.addColorStop(0, "#ff758c");
+    sphere.addColorStop(0.45, "#ff1744");
+    sphere.addColorStop(1, "#b30021");
+    ctx.beginPath();
+    ctx.arc(px, py, r, 0, Math.PI * 2);
+    ctx.fillStyle = sphere;
+    ctx.fill();
+
+    // Center hot core glow
+    ctx.shadowBlur = 8;
+    ctx.beginPath();
+    ctx.arc(px, py, r * 0.4, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(255, 235, 240, 0.92)";
+    ctx.fill();
+    ctx.restore();
+  }
+
+  // ── draw ghost sprite (identical to Three.js cursor follower, always upright with blue glow) ──
+  function drawGhost(gx, gy, isHead, idx) {
+    const px = gx * CELL + CELL / 2;
+    const py = gy * CELL + CELL / 2;
+    const s  = CELL * 0.46;
+
+    ctx.save();
+    // Always upright — no rotation applied!
+    ctx.translate(px, py);
+    ctx.globalAlpha = isHead ? 1 : Math.max(0.22, 0.88 - idx * 0.06);
+
+    // Intense blue fluorescent glow matching 0x123bff
+    if (isHead) {
+      ctx.shadowColor = "rgba(18, 59, 255, 1.0)";
+      ctx.shadowBlur  = 22;
+    } else {
+      ctx.shadowColor = "rgba(18, 59, 255, 0.65)";
+      ctx.shadowBlur  = 12;
+    }
+
+    // Body path: rounded dome head with organic wavy skirt
+    ctx.beginPath();
+    ctx.arc(0, -s * 0.1, s, Math.PI, 0);
+    const bumps = 6;
+    const bw = (2 * s) / bumps;
+    const bh = s * 0.26;
+    for (let i = bumps; i >= 0; i--) {
+      const bx = -s + bw * i;
+      const by = s * 0.92 + (i % 2 === 0 ? bh : -bh);
+      ctx.lineTo(bx, by);
+    }
+    ctx.closePath();
+
+    // Body fill: deep midnight navy matching 0x030713
+    const bodyGrad = ctx.createLinearGradient(0, -s, 0, s);
+    bodyGrad.addColorStop(0, "#060e26");
+    bodyGrad.addColorStop(0.5, "#030713");
+    bodyGrad.addColorStop(1, "#02040b");
+    ctx.fillStyle = bodyGrad;
+    ctx.fill();
+
+    // Glowing fluorescent blue rim border
+    ctx.strokeStyle = isHead ? "rgba(42, 110, 255, 0.95)" : "rgba(25, 75, 255, 0.65)";
+    ctx.lineWidth = isHead ? 1.6 : 1.0;
+    ctx.stroke();
+
+    // Eyes (identical to Three.js cursor follower: deep sockets + vibrant electric blue eyes)
+    if (isHead) {
+      // Deep black eye sockets
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = "#000208";
+      ctx.beginPath();
+      ctx.ellipse(-s * 0.32, -s * 0.06, s * 0.22, s * 0.24, 0, 0, Math.PI * 2);
+      ctx.ellipse( s * 0.32, -s * 0.06, s * 0.22, s * 0.24, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Glowing electric blue iris (matching fluorescentColors.blue 0x123bff)
+      ctx.shadowColor = "rgba(35, 110, 255, 1.0)";
+      ctx.shadowBlur  = 10;
+      ctx.fillStyle   = "#123bff";
+      ctx.beginPath();
+      ctx.arc(-s * 0.32, -s * 0.06, s * 0.13, 0, Math.PI * 2);
+      ctx.arc( s * 0.32, -s * 0.06, s * 0.13, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Bright white/cyan pupil core
+      ctx.shadowBlur = 4;
+      ctx.fillStyle  = "#e0edff";
+      ctx.beginPath();
+      ctx.arc(-s * 0.32, -s * 0.08, s * 0.05, 0, Math.PI * 2);
+      ctx.arc( s * 0.32, -s * 0.08, s * 0.05, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    ctx.restore();
+  }
+
+  // ── main draw ──
+  function drawFrame(t) {
+    ctx.clearRect(0,0,W,H);
+    drawGrid();
+    drawOrb(t);
+    snake.forEach((seg,i) => drawGhost(seg.x, seg.y, i===0, i));
+    // idle prompt
+    if (!running) {
+      ctx.save();
+      ctx.fillStyle = "rgba(155,255,0,0.75)";
+      ctx.font      = "600 13px 'Space Grotesk',sans-serif";
+      ctx.textAlign = "center";
+      ctx.shadowColor = "rgba(155,255,0,0.5)";
+      ctx.shadowBlur  = 12;
+      ctx.fillText("PRESS SPACE / ARROW KEY TO START", W/2, H/2 + 4);
+      ctx.restore();
+    }
+  }
+
+  // ── game tick ──
+  function tick() {
+    if (inputQueue.length > 0) {
+      dir = inputQueue.shift();
+    }
+    const head = {x:(snake[0].x+dir.x+COLS)%COLS, y:(snake[0].y+dir.y+ROWS)%ROWS};
+    if (snake.some(s=>s.x===head.x&&s.y===head.y)) { endGame(); return; }
+    snake.unshift(head);
+    if (head.x===orb.x && head.y===orb.y) {
+      score++; if(score>best) best=score;
+      updateHUD(); placeOrb();
+    } else { snake.pop(); }
+  }
+
+  function startGame(initialDir) {
+    resize();
+    initState(initialDir);
+    overlay.classList.remove("is-visible");
+    running = true;
+    if (statusEl){statusEl.textContent="RUNNING";statusEl.style.animation="none";}
+    clearInterval(gameLoop);
+    gameLoop = setInterval(tick, 90); // Snappy 90ms tick rate
+  }
+
+  function endGame() {
+    running = false;
+    clearInterval(gameLoop);
+    inputQueue = [];
+    if (statusEl){statusEl.textContent="GAME OVER";statusEl.style.animation="";}
+    if (finalEl) finalEl.textContent = score;
+    overlay.classList.add("is-visible");
+    if (score>best) best=score;
+    updateHUD();
+  }
+
+  // ── controls with input buffering ──
+  const DIRS = {
+    ArrowUp:{x:0,y:-1}, ArrowDown:{x:0,y:1}, ArrowLeft:{x:-1,y:0}, ArrowRight:{x:1,y:0},
+    w:{x:0,y:-1}, s:{x:0,y:1}, a:{x:-1,y:0}, d:{x:1,y:0},
+    W:{x:0,y:-1}, S:{x:0,y:1}, A:{x:-1,y:0}, D:{x:1,y:0},
+    UP:{x:0,y:-1}, DOWN:{x:0,y:1}, LEFT:{x:-1,y:0}, RIGHT:{x:1,y:0},
+  };
+
+  function applyDir(d) {
+    if (!d) return;
+    if (!running) {
+      startGame(d);
+      return;
+    }
+    const lastDir = inputQueue.length > 0 ? inputQueue[inputQueue.length - 1] : dir;
+    // Don't allow reversing into opposite direction or duplicate moves
+    if (d.x === -lastDir.x && d.y === -lastDir.y) return;
+    if (d.x === lastDir.x && d.y === lastDir.y) return;
+    // Buffer up to 2 responsive turns
+    if (inputQueue.length < 2) {
+      inputQueue.push(d);
+    }
+  }
+
+  window.addEventListener("keydown", e => {
+    if (e.code==="Escape" && running) { e.preventDefault(); endGame(); return; }
+    if (e.code==="Space")             { e.preventDefault(); if(!running) startGame(); return; }
+    const d = DIRS[e.key];
+    if (d) { e.preventDefault(); applyDir(d); }
+  });
+
+  document.querySelectorAll(".dpad-btn").forEach(btn =>
+    btn.addEventListener("pointerdown", e => { e.preventDefault(); applyDir(DIRS[btn.dataset.dir]); })
+  );
+
+  if (restartBtn) restartBtn.addEventListener("click", startGame);
+
+  // ── continuous 60fps RAF render loop (renders smooth orb & glow) ──
+  function renderLoop(t) {
+    drawFrame(t);
+    rafId = requestAnimationFrame(renderLoop);
+  }
+
+  // ── boot: wait for section to be visible so shell has real width ──
+  function boot() {
+    resize();
+    initState();
+    rafId = requestAnimationFrame(renderLoop);
+    window.addEventListener("resize", () => { resize(); if (!running) initState(); });
+  }
+
+  const gameSection = document.querySelector(".ghost-game");
+  const bootObs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) { boot(); bootObs.disconnect(); }
+  }, {threshold: 0.05});
+  if (gameSection) bootObs.observe(gameSection); else setTimeout(boot, 600);
+})();
+
+// ── Animated counters (hero-meta) ─────────────────────────────────────────────
+function animateCounter(el, target, duration) {
+  let start = null;
+  const step = (ts) => {
+    if (!start) start = ts;
+    const p = Math.min((ts - start) / duration, 1);
+    el.textContent = String(Math.round(p * target)).padStart(2, "0");
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+document.querySelectorAll(".meta-number").forEach((el, i) => {
+  const target = parseInt(el.textContent, 10);
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        setTimeout(() => animateCounter(el, target, 900), i * 200);
+        counterObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  counterObserver.observe(el);
+});
+
+

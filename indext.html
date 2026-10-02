@@ -4,11 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#03040b" />
-  <meta name="description" content="Alex Morgan is a computer science student building thoughtful software and playful digital experiences." />
-  <title>Alex Morgan — CS Student &amp; Builder</title>
+  <meta name="description" content="Mohith Raj builds useful software, explores intelligent systems, and learns by making things." />
+  <title>Mohith Raj — Computer Science / Class of 2028</title>
   <link rel="stylesheet" href="./style.css" />
 </head>
   <div class="scroll-progress" aria-hidden="true"><span id="scroll-progress-fill"></span></div>
+  <div class="noise-overlay" aria-hidden="true"></div>
+  <div class="scanlines" aria-hidden="true"></div>
+  <div class="glow-blob" aria-hidden="true"></div>
+  <a class="back-to-top" href="#top" aria-label="Back to top">
+    <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"></polyline></svg>
+  </a>
   <div id="preloader" class="preloader" role="status" aria-live="polite">
     <div class="preloader-content">
       <div class="ghost-loader" aria-hidden="true">
@@ -28,9 +34,9 @@
   <div class="content" id="main-content">
     <header class="site-header">
       <div class="nav-inner">
-        <a class="wordmark" href="#top" aria-label="Alex Morgan, back to top">
-          <span class="wordmark-mark">AM</span>
-          <span class="wordmark-name">Alex Morgan <span>/ CS STUDENT</span></span>
+        <a class="wordmark" href="#top" aria-label="Mohith Raj, back to top">
+          <span class="wordmark-mark">MR</span>
+          <span class="wordmark-name">Mohith Raj <span>/ CS STUDENT</span></span>
         </a>
         <nav class="primary-nav" aria-label="Main navigation">
           <a class="nav-link is-active" href="#top">Home</a>
@@ -38,7 +44,7 @@
           <a class="nav-link" href="#work">Work</a>
           <a class="nav-link" href="#contact">Contact</a>
         </nav>
-        <a class="availability" href="mailto:hello@alexmorgan.dev">
+        <a class="availability" href="mailto:mohithraj109@gmail.com">
           <span class="availability-dot"></span>
           Open to opportunities
         </a>
@@ -49,27 +55,42 @@
       <section class="hero page-section" id="top" aria-labelledby="hero-title">
         <div class="hero-grid page-width">
           <div class="hero-copy" data-reveal>
-            <p class="eyebrow"><span class="eyebrow-mark"></span> COMPUTER SCIENCE / CLASS OF 2027</p>
+            <p class="eyebrow"><span class="eyebrow-mark"></span> COMPUTER SCIENCE / CLASS OF 2028</p>
             <h1 id="hero-title">Curious by nature.<br /><span>Builder by choice.</span></h1>
-            <p class="hero-intro">I turn complex ideas into useful, thoughtful software. Currently studying computer science and making the internet a little more human.</p>
+            <p class="hero-intro">I build useful software, explore intelligent systems, and learn by making things.</p>
             <div class="hero-actions">
               <a class="button button-lime" href="#work">Explore selected work <span class="arrow-icon" aria-hidden="true"></span></a>
-              <a class="text-link" href="mailto:hello@alexmorgan.dev">Say hello <span class="arrow-icon arrow-coral" aria-hidden="true"></span></a>
+              <a class="text-link" href="mailto:mohithraj109@gmail.com">Say hello <span class="arrow-icon arrow-coral" aria-hidden="true"></span></a>
+              <div class="hero-social-links">
+                <a class="hero-social-btn" href="https://github.com/Mohithraj109" target="_blank" rel="noreferrer"><img src="https://cdn.simpleicons.org/github/9BFF00" alt="" width="14" height="14" /><span>GitHub ↗</span></a>
+                <a class="hero-social-btn" href="https://www.linkedin.com/in/mohith-raj-b53a21429/" target="_blank" rel="noreferrer"><img src="https://cdn.simpleicons.org/linkedin/9BFF00" alt="" width="14" height="14" /><span>LinkedIn ↗</span></a>
+              </div>
             </div>
             <div class="hero-meta">
-              <span><span class="meta-number">01</span> Based in Seattle, WA</span>
-              <span><span class="meta-number">02</span> Building for the curious</span>
+              <span><span class="meta-number">01</span> Based in India</span>
+              <span><span class="meta-number">02</span> Building for what's next</span>
             </div>
           </div>
-          <div class="hero-aside" data-reveal>
-            <span class="aside-rule"></span>
-            <p class="aside-label">CURRENTLY EXPLORING</p>
-            <p class="aside-focus">Human-centered<br />software <span>&amp;</span><br />creative code.</p>
-            <div class="aside-footer"><span>SCROLL TO EXPLORE</span><span class="scroll-arrow" aria-hidden="true"></span></div>
-          </div>
+          <aside class="hero-aside" data-reveal>
+            <div class="aside-top">
+              <span class="aside-label"><span class="aside-label-dot"></span> CURRENTLY EXPLORING</span>
+            </div>
+            <div class="aside-rule"></div>
+            <div class="aside-focus">
+              <span>AI systems</span>
+              <span>software architecture</span>
+              <em>&amp;</em>
+              <span>creative technology.</span>
+            </div>
+            <div class="aside-rule"></div>
+            <div class="aside-footer">
+              <span>MR / 2028</span>
+              <span>INDIA</span>
+            </div>
+          </aside>
         </div>
         <div class="hero-bottom page-width" aria-hidden="true">
-          <span>PORTFOLIO / 2026</span>
+          <span>PORTFOLIO / 2028</span>
           <span class="hero-bottom-line"></span>
           <span>DESIGNING IN CODE</span>
         </div>
@@ -78,17 +99,16 @@
       <section class="about page-section" id="about" aria-labelledby="about-title">
         <div class="page-width about-layout">
           <div class="about-story" data-reveal>
-            <p class="eyebrow"><span class="eyebrow-mark coral-mark"></span> 01 / THE HUMAN BEHIND THE HAUNTING</p>
-            <h2 id="about-title">Half logic.<br /><span>Half wonder.</span></h2>
-            <p class="about-lead">I’m Alex, a computer science student drawn to the strange overlap of engineering and imagination.</p>
-            <p class="about-body">I like building systems that feel alive, interfaces that invite curiosity, and tiny details you only notice when someone cared. Most days you’ll find me learning one layer deeper than the project strictly requires.</p>
-            <a class="text-link" href="#contact">Let’s compare notes <span class="arrow-icon arrow-coral" aria-hidden="true"></span></a>
-            <div class="about-signal"><span class="signal-orbit" aria-hidden="true"><i></i></span><span><b>IN MY ELEMENT</b><br />Making the invisible feel tangible.</span></div>
+            <p class="eyebrow"><span class="eyebrow-mark coral-mark"></span> 01 / THE HUMAN BEHIND THE CODE</p>
+            <h2 id="about-title">Half logic.<br /><span>Half curiosity.</span></h2>
+            <p class="about-lead">I'm a computer science student interested in the space between software, AI, and systems.</p>
+            <p class="about-body">I like learning new technology, experimenting with ideas, and building things that are actually useful.</p>
+            <div class="about-signal"><span class="signal-orbit" aria-hidden="true"><i></i></span><span><b>IN MY ELEMENT</b><br />Making ideas tangible.</span></div>
           </div>
 
           <div class="stack-console" data-reveal aria-label="Technology stack">
             <div class="stack-console-header">
-              <div><span class="stack-live"><i></i> SIGNAL DETECTED</span><h3>Things I speak.</h3></div>
+              <div><span class="stack-live"><i></i> SIGNAL DETECTED</span><h3>THINGS I SPEAK.</h3></div>
               <span class="stack-console-index">AM / 001</span>
             </div>
             <div class="stack-groups">
@@ -126,16 +146,17 @@
                 </div>
               </div>
               <div class="stack-group">
-                <div class="stack-category"><span>AI / Intelligent Systems</span><span>09</span></div>
+                <div class="stack-category"><span>AI / Intelligent Systems</span><span>10</span></div>
                 <div class="stack-items">
-                  <div class="stack-item"><span class="stack-mark" aria-hidden="true">OL</span><span>Ollama</span></div>
-                  <div class="stack-item"><span class="stack-mark" aria-hidden="true">LLM</span><span>Local LLMs</span></div>
-                  <div class="stack-item"><span class="stack-mark" aria-hidden="true">G</span><span>Gemini API</span></div>
-                  <div class="stack-item"><span class="stack-mark" aria-hidden="true">AI</span><span>OpenAI API</span></div>
+                  <div class="stack-item"><span class="stack-mark" aria-hidden="true">LLM</span><span>LLMs</span></div>
+                  <div class="stack-item"><span class="stack-mark" aria-hidden="true">OLL</span><span>Ollama</span></div>
+                  <div class="stack-item"><span class="stack-mark" aria-hidden="true">LOC</span><span>Local AI</span></div>
+                  <div class="stack-item"><span class="stack-mark" aria-hidden="true">GEM</span><span>Gemini</span></div>
+                  <div class="stack-item"><span class="stack-mark" aria-hidden="true">OAI</span><span>OpenAI</span></div>
                   <div class="stack-item"><span class="stack-mark" aria-hidden="true">OR</span><span>OpenRouter</span></div>
-                  <div class="stack-item"><span class="stack-mark" aria-hidden="true">AG</span><span>AI Agents</span></div>
+                  <div class="stack-item"><span class="stack-mark" aria-hidden="true">AGT</span><span>AI Agents</span></div>
                   <div class="stack-item"><span class="stack-mark" aria-hidden="true">LLM</span><span>LLM Integration</span></div>
-                  <div class="stack-item"><span class="stack-mark" aria-hidden="true">P</span><span>Prompt Engineering</span></div>
+                  <div class="stack-item"><span class="stack-mark" aria-hidden="true">PRM</span><span>Prompt Engineering</span></div>
                   <div class="stack-item"><span class="stack-mark" aria-hidden="true">AA</span><span>AI Architecture</span></div>
                 </div>
               </div>
@@ -148,7 +169,7 @@
                   <div class="stack-item"><span class="stack-mark" aria-hidden="true">CLI</span><span>GitHub CLI</span></div>
                   <div class="stack-item"><img src="https://cdn.simpleicons.org/npm/9BFF00" alt="" /><span>npm</span></div>
                   <div class="stack-item"><img src="https://cdn.simpleicons.org/pnpm/9BFF00" alt="" /><span>pnpm</span></div>
-                  <div class="stack-item"><span class="stack-mark" aria-hidden="true">C</span><span>Claude</span></div>
+                  <div class="stack-item"><span class="stack-mark" aria-hidden="true">CL</span><span>Claude</span></div>
                   <div class="stack-item"><span class="stack-mark" aria-hidden="true">AG</span><span>Antigravity</span></div>
                 </div>
               </div>
@@ -161,7 +182,7 @@
                 </div>
               </div>
             </div>
-            <div class="stack-console-footer"><span>TOOLS ARE JUST THE BEGINNING</span><span>MORE LOADING <i>↗</i></span></div>
+            <div class="stack-console-footer"><span>MORE LOADING</span><span>ALWAYS LEARNING · ALWAYS BUILDING</span></div>
           </div>
         </div>
       </section>
@@ -173,7 +194,7 @@
               <p class="eyebrow"><span class="eyebrow-mark"></span> 02 / SELECTED WORK</p>
               <h2 id="work-title">Small experiments.<br /><span>Useful outcomes.</span></h2>
             </div>
-            <p class="work-intro">A few things I’ve built while learning how to make software more useful, intuitive, and fun to explore.</p>
+            <p class="work-intro">A few things I've built while learning how to make software more useful, intuitive, and fun to explore.</p>
           </div>
 
           <div class="project-grid">
@@ -203,7 +224,7 @@
               </a>
               <div class="project-info">
                 <div><p class="project-kicker">02 / DEVELOPER TOOLS</p><h3>Patch Notes</h3><p class="project-description">A tiny tool that turns a week of commits into release notes people actually want to read.</p></div>
-                <div class="project-foot"><div class="tech-list"><span>TypeScript</span><span>OpenAI API</span></div><a class="project-repo" href="https://github.com/Mohithraj109/patch-notes" target="_blank" rel="noreferrer"><img src="https://cdn.simpleicons.org/github/9BFF00" alt="" /><span>View on GitHub</span></a></div>
+                <div class="project-foot"><div class="tech-list"><span>TypeScript</span><span>OpenAI API</span></div><a class="project-repo" href="https://github.com/Mohithraj109/patch-notes" target="_blank" rel="noreferrer"><img src="https://cdn.simpleicons.org/github/9BFF00" alt="" /><span>View repository</span></a></div>
               </div>
             </article>
 
@@ -223,23 +244,89 @@
         </div>
       </section>
 
+      <section class="ghost-game page-section" id="game" aria-label="Ghost game">
+        <div class="page-width">
+          <div class="game-heading" data-reveal>
+            <p class="eyebrow"><span class="eyebrow-mark"></span> 03 / JUST FOR FUN</p>
+            <h2 class="game-title">Take a break.<br /><span>Feed the ghost.</span></h2>
+            <p class="game-sub">Arrow keys or WASD to move. Eat the orbs. Don't hit yourself.</p>
+          </div>
+          <div class="game-shell" data-reveal>
+            <div class="game-hud">
+              <span class="game-hud-item"><span class="game-hud-label">SCORE</span><span class="game-score">000</span></span>
+              <span class="game-hud-item"><span class="game-hud-label">BEST</span><span class="game-best">000</span></span>
+              <span class="game-hud-item game-hud-status"><span class="game-hud-label">STATUS</span><span class="game-status-text">PRESS SPACE</span></span>
+            </div>
+            <canvas class="game-canvas" id="ghostCanvas" aria-label="Ghost snake game"></canvas>
+            <div class="game-overlay" id="gameOverlay">
+              <p class="game-over-label">GAME OVER</p>
+              <p class="game-over-score">Score: <span id="finalScore">0</span></p>
+              <button class="game-restart-btn" id="gameRestart">PLAY AGAIN <span class="arrow-icon" aria-hidden="true"></span></button>
+            </div>
+          </div>
+          <p class="game-hint">Mobile? Use the D-pad below</p>
+          <div class="game-dpad">
+            <button class="dpad-btn dpad-up"   data-dir="UP">▲</button>
+            <button class="dpad-btn dpad-left" data-dir="LEFT">◀</button>
+            <button class="dpad-btn dpad-down" data-dir="DOWN">▼</button>
+            <button class="dpad-btn dpad-right" data-dir="RIGHT">▶</button>
+          </div>
+        </div>
+      </section>
+
+
+
       <section class="contact page-section" id="contact" aria-labelledby="contact-title">
         <div class="contact-inner page-width" data-reveal>
-          <div class="contact-topline"><span>03 / YOUR NEXT GOOD IDEA</span><span>MY INBOX IS OPEN</span></div>
+          <div class="contact-topline"><span>04 / GET IN TOUCH</span><span>OPEN FOR OPPORTUNITIES</span></div>
           <div class="contact-main">
-            <div>
+            <div class="contact-header">
               <p class="eyebrow contact-eyebrow"><span class="eyebrow-mark"></span> HAVE A PROJECT IN MIND?</p>
-              <h2 id="contact-title">Let’s make<br />something <span>matter.</span></h2>
+              <h2 id="contact-title">Let's make<br />something <span>matter.</span></h2>
             </div>
             <div class="contact-action">
-              <p>I’m always up for thoughtful collaborations, interesting problems, or a conversation about what you’re building.</p>
-              <a class="contact-email" href="mailto:hello@alexmorgan.dev">hello@alexmorgan.dev <span class="arrow-icon" aria-hidden="true"></span></a>
+              <p>I'm always up for thoughtful collaborations, interesting problems, or a conversation about AI architecture and software systems.</p>
+              <div class="contact-methods">
+                <a class="contact-row" href="mailto:mohithraj109@gmail.com">
+                  <div class="contact-row-left">
+                    <span class="contact-row-type">EMAIL</span>
+                    <span class="contact-row-value">mohithraj109@gmail.com</span>
+                  </div>
+                  <span class="arrow-icon" aria-hidden="true"></span>
+                </a>
+                <a class="contact-row" href="tel:+918072983310">
+                  <div class="contact-row-left">
+                    <span class="contact-row-type">PHONE</span>
+                    <span class="contact-row-value">+91 8072983310</span>
+                  </div>
+                  <span class="arrow-icon" aria-hidden="true"></span>
+                </a>
+                <a class="contact-row" href="https://github.com/Mohithraj109" target="_blank" rel="noreferrer">
+                  <div class="contact-row-left">
+                    <img src="https://cdn.simpleicons.org/github/9BFF00" alt="" width="16" height="16" />
+                    <span class="contact-row-type">GITHUB</span>
+                    <span class="contact-row-value">github.com/Mohithraj109</span>
+                  </div>
+                  <span class="arrow-icon" aria-hidden="true"></span>
+                </a>
+                <a class="contact-row" href="https://www.linkedin.com/in/mohith-raj-b53a21429/" target="_blank" rel="noreferrer">
+                  <div class="contact-row-left">
+                    <img src="https://cdn.simpleicons.org/linkedin/9BFF00" alt="" width="16" height="16" />
+                    <span class="contact-row-type">LINKEDIN</span>
+                    <span class="contact-row-value">linkedin.com/in/mohith-raj</span>
+                  </div>
+                  <span class="arrow-icon" aria-hidden="true"></span>
+                </a>
+              </div>
             </div>
           </div>
           <footer class="site-footer">
-            <span>© 2026 ALEX MORGAN</span>
+            <span>© 2026 MOHITH RAJ</span>
             <span>MADE WITH CURIOSITY <i>+</i> CODE</span>
-            <div class="footer-links"><a href="https://github.com/yourusername" target="_blank" rel="noreferrer">GITHUB <span aria-hidden="true">↗</span></a><a href="https://www.linkedin.com/in/yourusername" target="_blank" rel="noreferrer">LINKEDIN <span aria-hidden="true">↗</span></a></div>
+            <div class="footer-links">
+              <a href="https://github.com/Mohithraj109" target="_blank" rel="noreferrer">GITHUB <span aria-hidden="true">↗</span></a>
+              <a href="https://www.linkedin.com/in/mohith-raj-b53a21429/" target="_blank" rel="noreferrer">LINKEDIN <span aria-hidden="true">↗</span></a>
+            </div>
           </footer>
         </div>
       </section>

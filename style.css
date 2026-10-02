@@ -1495,10 +1495,10 @@ a:focus-visible {
 
 .contact-main {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  align-items: end;
-  gap: 12%;
-  padding-block: 76px 92px;
+  grid-template-columns: 1.05fr 0.95fr;
+  align-items: start;
+  gap: 8%;
+  padding-block: 64px 80px;
 }
 
 .contact-eyebrow {
@@ -1511,9 +1511,9 @@ a:focus-visible {
 }
 
 .contact h2 {
-  margin-top: 24px;
-  font-size: 76px;
-  line-height: 1.03;
+  margin-top: 20px;
+  font-size: 68px;
+  line-height: 1.04;
 }
 
 .contact h2 span {
@@ -1521,38 +1521,122 @@ a:focus-visible {
 }
 
 .contact-action {
-  padding-bottom: 7px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
 }
 
 .contact-action p {
-  max-width: 365px;
   color: var(--paper-muted);
   font-size: 15px;
-  line-height: 1.8;
+  line-height: 1.75;
+  margin: 0;
 }
 
-.contact-email {
+.hero-social-links {
   display: inline-flex;
   align-items: center;
-  gap: 16px;
-  margin-top: 26px;
-  padding-bottom: 8px;
-  padding: 10px 12px;
-  border: 1px solid rgba(155, 255, 0, 0.48);
-  background: rgba(11, 22, 49, 0.5);
-  color: var(--paper);
-  font-family: var(--display);
-  font-size: 20px;
-  font-weight: 600;
-  backdrop-filter: blur(14px) saturate(145%);
-  -webkit-backdrop-filter: blur(14px) saturate(145%);
+  gap: 10px;
 }
 
-.contact-email .arrow-icon {
+.hero-social-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid rgba(142, 172, 255, 0.32);
+  background: rgba(10, 20, 44, 0.45);
+  color: var(--paper);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: border-color 180ms ease, background-color 180ms ease, color 180ms ease;
+  text-decoration: none;
+}
+
+.hero-social-btn:hover {
+  border-color: var(--acid);
+  background: rgba(155, 255, 0, 0.12);
+  color: var(--acid);
+}
+
+.contact-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.contact-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 13px 18px;
+  border: 1px solid rgba(142, 172, 255, 0.28);
+  background: rgba(8, 17, 40, 0.55);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(14px) saturate(145%);
+  -webkit-backdrop-filter: blur(14px) saturate(145%);
+  transition: border-color 180ms ease, background-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+  text-decoration: none;
+}
+
+.contact-row:hover {
+  border-color: var(--acid);
+  background: rgba(14, 28, 64, 0.8);
+  transform: translateX(4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), 0 0 12px rgba(155, 255, 0, 0.15);
+}
+
+.contact-row-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.contact-row-left img {
+  display: block;
+  flex-shrink: 0;
+}
+
+.contact-row-type {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  padding: 3px 7px;
+  background: rgba(155, 255, 0, 0.12);
+  color: var(--acid);
+  border: 1px solid rgba(155, 255, 0, 0.32);
+  letter-spacing: 0.08em;
+  flex-shrink: 0;
+}
+
+.contact-row-value {
+  color: var(--paper);
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 180ms ease;
+}
+
+.contact-row:hover .contact-row-value {
+  color: #ffffff;
+}
+
+.contact-row .arrow-icon {
+  flex-shrink: 0;
   transition: transform 180ms ease;
 }
 
-.contact-email:hover .arrow-icon {
+.contact-row:hover .arrow-icon {
   transform: translate(3px, -3px);
 }
 
@@ -1654,7 +1738,185 @@ canvas.fade-in {
   background: rgba(155, 255, 0, 0.06);
 }
 
-/* ── Nav scrolled state ─────────────────────────────────── */
+/* ── Ghost Game ─────────────────────────────────────────── */
+.ghost-game {
+  padding-block: 56px 48px;
+  border-bottom: 1px solid var(--line);
+}
+
+.game-heading {
+  margin-bottom: 28px;
+}
+
+.game-title {
+  font-family: var(--display);
+  font-size: 38px;
+  font-weight: 600;
+  line-height: 1.05;
+  margin-top: 12px;
+  text-shadow: 0 2px 14px rgba(3,4,11,0.86);
+}
+
+.game-title span { color: var(--acid); }
+
+.game-sub {
+  margin-top: 10px;
+  color: var(--paper-muted);
+  font-size: 12px;
+}
+
+.game-shell {
+  position: relative;
+  border: 1px solid rgba(142,172,255,0.38);
+  background: rgba(4,9,24,0.72);
+  box-shadow: inset 0 1px rgba(243,247,255,0.1), 0 24px 80px rgba(1,3,12,0.4);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  overflow: hidden;
+}
+
+.game-hud {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 12px 18px;
+  border-bottom: 1px solid rgba(216,226,255,0.1);
+  font-family: var(--mono);
+  font-size: 8px;
+  text-transform: uppercase;
+}
+
+.game-hud-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.game-hud-label { color: var(--paper-muted); }
+
+.game-score,
+.game-best {
+  font-family: var(--display);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--acid);
+  line-height: 1;
+}
+
+.game-hud-status { margin-left: auto; }
+
+.game-status-text {
+  font-size: 9px;
+  color: var(--coral);
+  animation: textPulse 1.8s ease-in-out infinite;
+}
+
+.game-canvas {
+  display: block;
+  width: 100%;
+  height: 280px;
+  background: rgba(4,9,24,0.6);
+  opacity: 1 !important;
+}
+
+.game-overlay {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background: rgba(3,4,11,0.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.game-overlay.is-visible { display: flex; }
+
+.game-over-label {
+  font-family: var(--display);
+  font-size: 38px;
+  font-weight: 600;
+  color: var(--acid);
+}
+
+.game-over-score {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--paper-muted);
+  text-transform: uppercase;
+}
+
+.game-restart-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 0 20px;
+  border: 1px solid rgba(155,255,0,0.7);
+  background: rgba(155,255,0,0.1);
+  color: var(--acid);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  transition: background 180ms ease;
+}
+
+.game-restart-btn:hover { background: rgba(155,255,0,0.2); }
+
+.game-hint {
+  margin-top: 12px;
+  color: var(--paper-muted);
+  font-family: var(--mono);
+  font-size: 8px;
+  text-transform: uppercase;
+  display: none;
+}
+
+.game-dpad {
+  display: none;
+  position: relative;
+  width: 110px;
+  height: 110px;
+  margin: 14px auto 0;
+}
+
+.dpad-btn {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(142,172,255,0.38);
+  background: rgba(11,22,49,0.6);
+  color: var(--paper-muted);
+  font-size: 11px;
+  transition: background 150ms ease, color 150ms ease;
+}
+
+.dpad-btn:active { background: rgba(155,255,0,0.18); color: var(--acid); }
+
+.dpad-up    { top: 0;    left: 50%; transform: translateX(-50%); }
+.dpad-down  { bottom: 0; left: 50%; transform: translateX(-50%); }
+.dpad-left  { left: 0;   top: 50%;  transform: translateY(-50%); }
+.dpad-right { right: 0;  top: 50%;  transform: translateY(-50%); }
+
+@media (max-width: 760px) {
+  .game-hint { display: block; }
+  .game-dpad { display: block; }
+  .game-title { font-size: 28px; }
+  .game-canvas { height: 240px; }
+}
+
+@media (max-width: 560px) {
+  .game-title { font-size: 24px; }
+  .game-over-label { font-size: 28px; }
+  .game-canvas { height: 200px; }
+}
+
+
 .site-header.is-scrolled {
   background: rgba(3, 4, 11, 0.88);
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
@@ -2139,21 +2401,35 @@ canvas.fade-in {
   }
 
   .contact-main {
-    gap: 28px;
+    grid-template-columns: 1fr;
+    gap: 32px;
     padding-block: 48px 54px;
   }
 
   .contact h2 {
-    font-size: 48px;
+    font-size: 44px;
   }
 
   .contact-action p {
     font-size: 14px;
   }
 
-  .contact-email {
-    gap: 9px;
-    font-size: 16px;
+  .hero-social-links {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .contact-methods {
+    width: 100%;
+  }
+
+  .contact-row {
+    padding: 12px 14px;
+  }
+
+  .contact-row-value {
+    font-size: 13px;
   }
 
   .site-footer {

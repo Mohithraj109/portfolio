@@ -224,10 +224,11 @@ a:focus-visible {
   position: sticky;
   top: 0;
   z-index: 100;
-  border-bottom: 1px solid rgba(240, 240, 232, 0.1);
-  background: rgba(3, 4, 11, 0.88);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(142, 172, 255, 0.28);
+  background: rgba(5, 12, 30, 0.62);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(24px) saturate(155%);
+  -webkit-backdrop-filter: blur(24px) saturate(155%);
 }
 
 .nav-inner {
@@ -722,9 +723,12 @@ a:focus-visible {
   position: relative;
   overflow: hidden;
   padding: 25px 27px 0;
-  border: 1px solid rgba(32, 76, 255, 0.55);
-  background: linear-gradient(145deg, rgba(7, 15, 38, 0.97), rgba(4, 6, 16, 0.98));
-  box-shadow: 0 24px 100px rgba(1, 3, 12, 0.58), inset 0 1px rgba(243, 247, 255, 0.05);
+  border: 1px solid rgba(142, 172, 255, 0.38);
+  border-radius: 4px;
+  background: linear-gradient(145deg, rgba(20, 36, 76, 0.58), rgba(4, 9, 24, 0.68));
+  box-shadow: 0 24px 100px rgba(1, 3, 12, 0.58), inset 0 1px rgba(243, 247, 255, 0.14);
+  backdrop-filter: blur(24px) saturate(165%);
+  -webkit-backdrop-filter: blur(24px) saturate(165%);
 }
 
 .stack-console::before {
@@ -736,6 +740,18 @@ a:focus-visible {
   background: var(--coral);
   box-shadow: 0 0 18px rgba(155, 255, 0, 0.9);
   content: "";
+}
+
+.stack-console::after,
+.project-visual::after {
+  position: absolute;
+  top: 0;
+  left: 8%;
+  width: 34%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(243, 247, 255, 0.72), transparent);
+  content: "";
+  pointer-events: none;
 }
 
 .stack-console-header,
@@ -782,14 +798,14 @@ a:focus-visible {
 .stack-groups {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0 23px;
-  margin-top: 19px;
+  gap: 8px 24px;
+  margin-top: 22px;
 }
 
 .stack-group {
   min-width: 0;
-  padding-block: 15px 17px;
-  border-top: 1px solid rgba(231, 226, 255, 0.12);
+  padding-block: 13px 16px;
+  border-top: 1px solid rgba(142, 172, 255, 0.25);
   opacity: 0;
   transform: translateY(12px);
   transition: opacity 520ms ease, transform 600ms cubic-bezier(0.2, 0.75, 0.2, 1);
@@ -804,41 +820,55 @@ a:focus-visible {
 .stack-console.is-visible .stack-group:nth-child(3) { transition-delay: 180ms; }
 .stack-console.is-visible .stack-group:nth-child(4) { transition-delay: 270ms; }
 .stack-console.is-visible .stack-group:nth-child(5) { transition-delay: 360ms; }
+.stack-console.is-visible .stack-group:nth-child(6) { transition-delay: 450ms; }
 
 .stack-category {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  color: var(--paper-muted);
-  font-family: var(--mono);
-  font-size: 9px;
+  padding-bottom: 9px;
+  color: var(--paper);
+  font-family: var(--body);
+  font-size: 11px;
+  font-weight: 600;
   text-transform: uppercase;
 }
 
 .stack-category span:last-child {
-  color: rgba(32, 76, 255, 0.95);
+  display: grid;
+  min-width: 25px;
+  height: 19px;
+  place-items: center;
+  border: 1px solid rgba(155, 255, 0, 0.42);
+  color: var(--acid);
+  font-family: var(--mono);
   font-size: 8px;
 }
 
 .stack-items {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 7px;
-  margin-top: 11px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 8px;
 }
 
 .stack-item {
-  display: inline-flex;
-  min-height: 36px;
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  min-height: 39px;
   align-items: center;
-  gap: 7px;
-  padding: 7px 9px;
-  border: 1px solid rgba(231, 226, 255, 0.11);
-  background: rgba(243, 240, 255, 0.035);
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid rgba(142, 172, 255, 0.2);
+  background: rgba(11, 22, 49, 0.48);
   color: var(--paper);
-  font-size: 10px;
+  font-size: 11px;
+  line-height: 1.25;
   transition: border-color 200ms ease, background-color 200ms ease, transform 200ms ease;
+  backdrop-filter: blur(10px) saturate(145%);
+  -webkit-backdrop-filter: blur(10px) saturate(145%);
 }
 
 .stack-item:hover {
@@ -849,14 +879,28 @@ a:focus-visible {
 
 .stack-item img {
   display: block;
-  width: 15px;
-  height: 15px;
+  width: 17px;
+  height: 17px;
+  flex: 0 0 17px;
   object-fit: contain;
   filter: drop-shadow(0 0 5px rgba(32, 76, 255, 0.34));
 }
 
 .stack-item img.stack-logo-devicon {
   filter: grayscale(1) brightness(0) invert(1) drop-shadow(0 0 5px rgba(32, 76, 255, 0.34));
+}
+
+.stack-mark {
+  display: grid;
+  width: 17px;
+  height: 17px;
+  flex: 0 0 17px;
+  place-items: center;
+  color: var(--acid);
+  font-family: var(--mono);
+  font-size: 7px;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .stack-console-footer {
@@ -921,8 +965,12 @@ a:focus-visible {
   overflow: hidden;
   flex-direction: column;
   justify-content: space-between;
-  border: 1px solid rgba(240, 240, 232, 0.15);
-  background: #050916;
+  border: 1px solid rgba(142, 172, 255, 0.27);
+  border-radius: 4px;
+  background: rgba(5, 14, 37, 0.48);
+  box-shadow: inset 0 1px rgba(243, 247, 255, 0.1);
+  backdrop-filter: blur(18px) saturate(155%);
+  -webkit-backdrop-filter: blur(18px) saturate(155%);
   transition: border-color 220ms ease, transform 220ms ease;
 }
 
@@ -933,7 +981,7 @@ a:focus-visible {
 
 .visual-campus {
   min-height: 330px;
-  background: #050916;
+  background: rgba(5, 9, 22, 0.48);
 }
 
 .visual-topbar,
@@ -980,11 +1028,13 @@ a:focus-visible {
   position: absolute;
   inset: 39px 0 0;
   overflow: hidden;
-  background-color: #07112a;
+  background-color: rgba(7, 17, 42, 0.58);
   background-image:
     linear-gradient(35deg, transparent 46%, rgba(32, 76, 255, 0.16) 47%, rgba(32, 76, 255, 0.16) 48%, transparent 49%),
     linear-gradient(125deg, transparent 40%, rgba(240, 240, 232, 0.055) 41%, rgba(240, 240, 232, 0.055) 42%, transparent 43%);
   background-size: 190px 150px, 250px 190px;
+  backdrop-filter: blur(8px) saturate(140%);
+  -webkit-backdrop-filter: blur(8px) saturate(140%);
 }
 
 .map-grid-lines {
@@ -1224,9 +1274,41 @@ a:focus-visible {
   color: var(--ink);
 }
 
+.project-repo {
+  display: inline-flex;
+  min-height: 38px;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
+  padding-inline: 11px;
+  border: 1px solid rgba(240, 240, 232, 0.24);
+  background: rgba(5, 12, 30, 0.62);
+  color: var(--paper);
+  font-family: var(--mono);
+  font-size: 8px;
+  text-transform: uppercase;
+  transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
+}
+
+.project-repo img {
+  display: block;
+  width: 15px;
+  height: 15px;
+}
+
+.project-repo:hover {
+  border-color: var(--acid);
+  background: var(--acid);
+  color: var(--ink);
+}
+
+.project-repo:hover img {
+  filter: brightness(0);
+}
+
 .visual-terminal {
   min-height: 270px;
-  background: #060914;
+  background: rgba(6, 9, 20, 0.76);
 }
 
 .terminal-head {
@@ -1308,7 +1390,7 @@ a:focus-visible {
 .visual-signal {
   min-height: 270px;
   padding: 18px 20px;
-  background: #080d1b;
+  background: rgba(8, 13, 27, 0.76);
 }
 
 .signal-top,
@@ -1673,6 +1755,18 @@ canvas.fade-in {
   .stack-console {
     width: 100%;
     max-width: 680px;
+  }
+
+  .stack-items {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .stack-item {
+    width: auto;
+    min-height: 36px;
+    padding: 7px 9px;
+    font-size: 10px;
   }
 
   .work-heading {
